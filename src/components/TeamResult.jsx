@@ -1,11 +1,37 @@
+import { useRef } from 'react'
+import html2canvas from 'html2canvas'
+
 export function TeamResult({ teams }) {
   if (!teams || teams.length === 0) return null
 
+  const exportRef = useRef(null)
+
+  const handleExport = async () => {
+    if (!exportRef.current) return
+    const canvas = await html2canvas(exportRef.current, {
+      backgroundColor: '#ffffff',
+      scale: 2
+    })
+    const link = document.createElement('a')
+    link.download = 'equipos-sorteados.png'
+    link.href = canvas.toDataURL('image/png')
+    link.click()
+  }
+
   return (
     <div className="space-y-4 animate-fade-in">
-      <h3 className="text-2xl font-[var(--font-display)] tracking-wide uppercase text-[var(--text-primary)]">
-        Resultado del Sorteo
-      </h3>
+      <div className="flex items-center justify-between">
+        <h3 className="text-2xl font-[var(--font-display)] tracking-wide uppercase text-[var(--text-primary)]">
+          Resultado del Sorteo
+        </h3>
+        <button
+          onClick={handleExport}
+          className="text-xs font-[var(--font-mono)] text-[var(--accent)] border border-[var(--accent)] px-4 py-2 hover:bg-[var(--accent-glow)] transition tracking-wider uppercase"
+        >
+          Exportar PNG
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {teams.map((team, i) => (
           <div
@@ -45,6 +71,51 @@ export function TeamResult({ teams }) {
             </div>
           </div>
         ))}
+      </div>
+
+      <div
+        ref={exportRef}
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: 0,
+          backgroundColor: '#0a0a0a',
+          padding: '40px',
+          width: '900px',
+          color: '#e8e4e0'
+        }}
+      >
+        <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '32px', color: '#00ff88', textShadow: '0 0 10px #00ff88, 0 0 20px rgba(0,255,136,0.3)', marginBottom: '40px', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+          Equipos Sorteados
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: teams.length > 1 ? '1fr 1fr' : '1fr', gap: '24px' }}>
+          {teams.map((team, i) => (
+            <div key={i} style={{ backgroundColor: '#1a1a1a', border: '2px solid #00ff88', boxShadow: '0 0 15px rgba(0,255,136,0.2)', padding: '24px', borderRadius: '4px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '2px', backgroundColor: '#00ff88' }} />
+              <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '24px', color: '#00ff88', textShadow: '0 0 8px #00ff88', marginBottom: '16px', textTransform: 'uppercase' }}>
+                {team.name}
+              </h3>
+              <div style={{ fontFamily: "'Space Mono', monospace", fontSize: '14px', marginBottom: '20px' }}>
+                {team.players.map((p, idx) => (
+                  <div key={p.id} style={{ marginBottom: '6px', display: 'flex', gap: '8px' }}>
+                    <span style={{ color: '#00ff88', fontWeight: 'bold' }}>{idx + 1}.</span>
+                    <span style={{ color: '#e8e4e0' }}>{p.name}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', fontFamily: "'Space Mono', monospace", fontSize: '12px', color: '#8a8580', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                <div>
+                  <span style={{ color: '#00ff88', fontWeight: 'bold', fontSize: '20px', display: 'block', marginBottom: '4px' }}>{team.avgAttack}</span>
+                  Ataque Est.
+                </div>
+                <div>
+                  <span style={{ color: '#00ff88', fontWeight: 'bold', fontSize: '20px', display: 'block', marginBottom: '4px' }}>{team.avgDefense}</span>
+                  Defensa Est.
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

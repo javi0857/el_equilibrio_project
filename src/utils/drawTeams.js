@@ -1,4 +1,4 @@
-export function drawTeams(selectedPlayerIds, allPlayers, numTeams) {
+export function drawTeams(selectedPlayerIds, allPlayers, numTeams, teamNames = []) {
   const players = allPlayers
     .filter(p => selectedPlayerIds.includes(p.id))
     .map(p => ({
@@ -41,7 +41,7 @@ export function drawTeams(selectedPlayerIds, allPlayers, numTeams) {
   }
 
   return teams.map((team, i) => ({
-    name: `Equipo ${i + 1}`,
+    name: teamNames[i] || `Equipo ${i + 1}`,
     players: team.players,
     avgAttack: team.players.length ? (team.totalAttack / team.players.length).toFixed(1) : 0,
     avgDefense: team.players.length ? (team.totalDefense / team.players.length).toFixed(1) : 0,

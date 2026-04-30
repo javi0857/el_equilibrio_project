@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { drawTeams } from '../utils/drawTeams'
 
 export function TeamDrawer({ players, onDraw }) {
   const [selectedIds, setSelectedIds] = useState([])
   const [numTeams, setNumTeams] = useState(2)
+  const [teamNames, setTeamNames] = useState(Array(2).fill(''))
 
   const togglePlayer = (id) => {
     setSelectedIds(prev =>
@@ -19,9 +20,28 @@ export function TeamDrawer({ players, onDraw }) {
     }
   }
 
+  useEffect(() => {
+    setTeamNames(prev => {
+      const updated = Array(numTeams).fill('')
+      for (let i = 0; i < Math.min(prev.length, numTeams); i++) {
+        updated[i] = prev[i]
+      }
+      return updated
+    })
+  }, [numTeams])
+
+  const updateTeamName = (index, value) => {
+    setTeamNames(prev => {
+      const updated = [...prev]
+      updated[index] = value
+      return updated
+    })
+  }
+
   const handleDraw = () => {
     if (selectedIds.length < numTeams) return
-    const result = drawTeams(selectedIds, players, numTeams)
+    const names = teamNames.map((n, i) => n.trim() || `Equipo ${i + 1}`)
+    const result = drawTeams(selectedIds, players, numTeams, names)
     onDraw(result)
   }
 
@@ -41,6 +61,22 @@ export function TeamDrawer({ players, onDraw }) {
           onChange={e => setNumTeams(Math.max(2, Math.min(10, Number(e.target.value))))}
           className="w-24 px-3 py-2 bg-[var(--bg-input)] border border-[var(--border)] text-[var(--text-primary)] font-[var(--font-mono)] text-sm focus:outline-none focus:border-[var(--accent)] transition text-center"
         />
+      </div>
+
+      <div className="space-y-3">
+        <label className="block text-xs font-[var(--font-mono)] text-[var(--text-secondary)] mb-2 tracking-wider uppercase">
+          Nombres de Equipos
+        </label>
+        {teamNames.map((name, i) => (
+          <input
+            key={i}
+            type="text"
+            value={name}
+            onChange={e => updateTeamName(i, e.target.value)}
+            placeholder={`Equipo ${i + 1}`}
+            className="w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border)] text-[var(--text-primary)] font-[var(--font-mono)] text-sm focus:outline-none focus:border-[var(--accent)] transition placeholder-[var(--text-muted)]"
+          />
+        ))}
       </div>
 
       <button
