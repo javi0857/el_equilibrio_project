@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { usePlayers } from './hooks/usePlayers'
+import { drawTeams } from './utils/drawTeams'
 import { PlayerManager } from './components/PlayerManager'
 import { TeamDrawer } from './components/TeamDrawer'
 import { TeamResult } from './components/TeamResult'
@@ -8,8 +9,17 @@ function App() {
   const { players, addPlayer, updatePlayer, deletePlayer } = usePlayers()
   const [tab, setTab] = useState('players')
   const [teams, setTeams] = useState(null)
+  const [drawParams, setDrawParams] = useState(null)
 
-  const handleDraw = (result) => {
+  const handleDraw = (result, params) => {
+    setTeams(result)
+    setDrawParams(params)
+  }
+
+  const handleRedraw = () => {
+    if (!drawParams) return
+    const { selectedIds, numTeams, teamNames } = drawParams
+    const result = drawTeams(selectedIds, players, numTeams, teamNames)
     setTeams(result)
   }
 
@@ -28,7 +38,7 @@ function App() {
 
         <nav className="flex border-b border-[var(--border)] mb-8">
           <button
-            onClick={() => { setTab('players'); setTeams(null) }}
+            onClick={() => { setTab('players'); setTeams(null); setDrawParams(null) }}
             className={`px-6 py-3 text-sm font-[var(--font-mono)] tracking-wider uppercase transition-all duration-300 border-b-2 ${
               tab === 'players'
                 ? 'border-[var(--accent)] text-[var(--accent)]'
@@ -65,7 +75,7 @@ function App() {
           {tab === 'draw' && (
             <div className="space-y-6 animate-fade-in">
               <TeamDrawer players={players} onDraw={handleDraw} />
-              <TeamResult teams={teams} />
+              <TeamResult teams={teams} onRedraw={handleRedraw} />
             </div>
           )}
         </main>

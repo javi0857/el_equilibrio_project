@@ -42,7 +42,7 @@ export function TeamDrawer({ players, onDraw }) {
     if (selectedIds.length < numTeams) return
     const names = teamNames.map((n, i) => n.trim() || `Equipo ${i + 1}`)
     const result = drawTeams(selectedIds, players, numTeams, names)
-    onDraw(result)
+    onDraw(result, { selectedIds, numTeams, teamNames: names })
   }
 
   return (
