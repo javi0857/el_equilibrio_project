@@ -1,28 +1,55 @@
 export function PlayerList({ players, onEdit, onDelete }) {
   if (players.length === 0) {
-    return <p className="text-gray-400 text-center py-8">No hay jugadores creados</p>
+    return (
+      <div className="text-center py-12 border border-dashed border-[var(--border)]">
+        <p className="text-[var(--text-muted)] font-[var(--font-mono)] text-sm uppercase tracking-wider">
+          No hay jugadores creados
+        </p>
+        <p className="text-[var(--text-muted)] font-[var(--font-mono)] text-xs mt-2 opacity-60">
+          Agrega jugadores para comenzar
+        </p>
+      </div>
+    )
   }
 
   return (
     <div className="space-y-2">
-      {players.map(player => (
-        <div key={player.id} className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3">
-          <div>
-            <p className="font-medium text-gray-900">{player.name}</p>
-            <p className="text-sm text-gray-500">Ataque: {player.attack} · Defensa: {player.defense}</p>
+      {players.map((player, index) => (
+        <div
+          key={player.id}
+          className="flex items-center justify-between bg-[var(--bg-card)] border border-[var(--border)] px-4 py-3 hover:border-[var(--accent)]/30 transition-all duration-300 group animate-slide-in stagger-[var(--stagger)]"
+          style={{ animationDelay: `${index * 0.05}s` }}
+        >
+          <div className="flex-1">
+            <p className="font-[var(--font-display)] text-lg tracking-wide text-[var(--text-primary)]">
+              {player.name}
+            </p>
+            <div className="flex gap-4 mt-1">
+              <span className="text-xs font-[var(--font-mono)] text-[var(--accent)]">
+                ATK:{player.attack}
+              </span>
+              <span className="text-xs font-[var(--font-mono)] text-[var(--text-secondary)]">
+                DEF:{player.defense}
+              </span>
+              <span className="text-xs font-[var(--font-mono)] text-[var(--text-muted)]">
+                NIV:{player.attack + player.defense}
+              </span>
+            </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               onClick={() => onEdit(player)}
-              className="text-sm text-blue-600 hover:text-blue-800 px-2 py-1"
+              className="text-xs font-[var(--font-mono)] text-[var(--text-secondary)] hover:text-[var(--accent)] px-3 py-1 border border-[var(--border)] hover:border-[var(--accent)] transition uppercase tracking-wider"
+              aria-label={`Editar ${player.name}`}
             >
               Editar
             </button>
             <button
               onClick={() => onDelete(player.id)}
-              className="text-sm text-red-500 hover:text-red-700 px-2 py-1"
+              className="text-xs font-[var(--font-mono)] text-[var(--text-secondary)] hover:text-[var(--danger)] px-3 py-1 border border-[var(--border)] hover:border-[var(--danger)] transition uppercase tracking-wider"
+              aria-label={`Eliminar ${player.name}`}
             >
-              Eliminar
+              Borrar
             </button>
           </div>
         </div>

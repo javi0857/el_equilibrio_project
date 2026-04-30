@@ -24,10 +24,14 @@ export function PlayerManager({ players, onAdd, onUpdate, onDelete }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">
+      <section className="bg-[var(--bg-card)] border border-[var(--border)] rounded-none p-6 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-[2px] h-full bg-[var(--accent)] opacity-60" />
+        <h3 className="text-2xl font-[var(--font-display)] tracking-wide uppercase mb-1">
           {editing ? 'Editar Jugador' : 'Nuevo Jugador'}
         </h3>
+        <p className="text-xs text-[var(--text-muted)] font-[var(--font-mono)] mb-4">
+          {editing ? 'Modificando registro existente' : 'Agregar al roster'}
+        </p>
         <PlayerForm
           initialData={editing}
           onSubmit={handleSubmit}
@@ -36,22 +40,26 @@ export function PlayerManager({ players, onAdd, onUpdate, onDelete }) {
         {editing && (
           <button
             onClick={handleCancelEdit}
-            className="mt-2 text-sm text-gray-500 hover:text-gray-700"
+            className="mt-4 text-xs text-[var(--text-muted)] hover:text-[var(--accent)] transition font-[var(--font-mono)] tracking-wider uppercase"
           >
-            Cancelar edición
+            [Cancelar edición]
           </button>
         )}
-      </div>
-      <div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">
-          Jugadores ({players.length})
+      </section>
+
+      <section>
+        <h3 className="text-2xl font-[var(--font-display)] tracking-wide uppercase mb-1">
+          Roster ({players.length})
         </h3>
+        <p className="text-xs text-[var(--text-muted)] font-[var(--font-mono)] mb-4">
+          Gestionar jugadores registrados
+        </p>
         <PlayerList
           players={players}
           onEdit={handleEdit}
           onDelete={onDelete}
         />
-      </div>
+      </section>
     </div>
   )
 }

@@ -17,47 +17,64 @@ export function PlayerForm({ onSubmit, initialData, submitLabel }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+        <label className="block text-xs font-[var(--font-mono)] text-[var(--text-secondary)] mb-2 tracking-wider uppercase">
+          Nombre del Jugador
+        </label>
         <input
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Nombre del jugador"
+          className="w-full px-4 py-3 bg-[var(--bg-input)] border border-[var(--border)] text-[var(--text-primary)] font-[var(--font-mono)] text-sm focus:outline-none focus:border-[var(--accent)] transition placeholder:text-[var(--text-muted)]"
+          placeholder="Ingresa el nombre..."
           required
         />
       </div>
-      <div className="grid grid-cols-2 gap-4">
+
+      <div className="grid grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Ataque: {attack}</label>
+          <label className="block text-xs font-[var(--font-mono)] text-[var(--text-secondary)] mb-2 tracking-wider uppercase">
+            Ataque: <span className="text-[var(--accent)] font-bold">{attack}</span>
+          </label>
           <input
             type="range"
             min="1"
             max="10"
             value={attack}
             onChange={e => setAttack(e.target.value)}
-            className="w-full accent-blue-600"
+            className="w-full"
           />
+          <div className="flex justify-between mt-1">
+            <span className="text-[10px] text-[var(--text-muted)]">1</span>
+            <span className="text-[10px] text-[var(--text-muted)]">10</span>
+          </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Defensa: {defense}</label>
+          <label className="block text-xs font-[var(--font-mono)] text-[var(--text-secondary)] mb-2 tracking-wider uppercase">
+            Defensa: <span className="text-[var(--accent)] font-bold">{defense}</span>
+          </label>
           <input
             type="range"
             min="1"
             max="10"
             value={defense}
             onChange={e => setDefense(e.target.value)}
-            className="w-full accent-blue-600"
+            className="w-full"
           />
+          <div className="flex justify-between mt-1">
+            <span className="text-[10px] text-[var(--text-muted)]">1</span>
+            <span className="text-[10px] text-[var(--text-muted)]">10</span>
+          </div>
         </div>
       </div>
+
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+        className="w-full bg-[var(--accent)] text-[var(--bg-primary)] py-3 font-[var(--font-display)] text-lg tracking-widest uppercase hover:bg-[var(--accent-hover)] transition-all duration-300 relative group"
       >
-        {submitLabel || 'Guardar'}
+        <span className="relative z-10">{submitLabel || 'Guardar'}</span>
+        <div className="absolute inset-0 bg-[var(--accent-hover)] scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
       </button>
     </form>
   )
