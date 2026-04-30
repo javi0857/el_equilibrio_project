@@ -14,5 +14,5 @@
 
 ## Project Quirks
 - Tailwind CSS is configured via `@tailwindcss/vite` plugin in `vite.config.js` (no separate `tailwind.config.js`).
-- Persistence uses `localStorage` key `team-drawer-players` (see `src/hooks/usePlayers.js`).
+- Persistence uses `localStorage` key `el_equilibrio_project-players` (see `src/hooks/usePlayers.js`).
 - No backend, test framework, or linting configured.

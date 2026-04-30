@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-const STORAGE_KEY = 'team-drawer-players'
+const STORAGE_KEY = 'el_equilibrio_project-players'
 
 function loadPlayers() {
   try {
